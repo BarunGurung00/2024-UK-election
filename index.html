@@ -5,10 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ElectionData</title>
     <link rel="stylesheet" href="./assets/style.css" />
+    <script
+      src="https://cdn.plot.ly/plotly-2.30.0.min.js"
+      charset="utf-8"
+    ></script>
   </head>
   <body>
     <header>
       <h1>Race Of Commons</h1>
     </header>
+
+    <div id="nav">
+      <button>Election history</button>
+      <button>Sentiment</button>
+      <button>Tweets</button>
+    </div>
+
+    <div id="plot"></div>
+
+    <script>
+      //Open connection
+      let connection = new WebSocket(
+        "wss://auhfg2511g.execute-api.us-east-1.amazonaws.com/production"
+      );
+
+      //Log connected response
+      connection.onopen = function (event) {
+        console.log("Connected: " + JSON.stringify(event));
+        sendMessage();
+      };
+
+      //Output messages from the server
+      connection.onmessage = function (msg) {
+        const data = JSON.parse(msg.data);
+        console.log(data);
+
+        const trace = {
+          x: data.actual.times,
+          y: data.actual.value,
+          type: "scatter",
+        };
+
+        const graph = [trace];
+
+        Plotly.newPlot("plot", graph);
+      };
+
+      //Log errors
+      connection.onerror = function (error) {
+        console.log("WebSocket Error: " + JSON.stringify(error));
+      };
+
+      //Send message to server
+      function sendMessage() {
+        //Create message to be sent to server
+        let msgObject = {
+          action: "sendMessage", //Used for routing in API Gateway
+          data: "",
+        };
+        //Send message
+        connection.send(JSON.stringify(msgObject));
+        //Log result
+        console.log("Message sent: " + JSON.stringify(msgObject));
+      }
+    </script>
   </body>
 </html>

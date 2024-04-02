@@ -9,8 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-sagemaker-runtime": "^3.540.0",
     "aws": "^0.0.3-2",
     "aws-sdk": "^2.1589.0",
+    "error": "^10.4.0",
     "xlsx": "^0.18.5"
   }
 }
