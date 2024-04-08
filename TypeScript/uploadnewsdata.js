@@ -63,93 +63,68 @@ var partyNames = ["Labour", "Conservative", "SNP"];
 // Calls guardian Api and retrieves array of articles : 10 at a time
 function fetchNewsApi(name) {
     return __awaiter(this, void 0, void 0, function () {
-        var arrayData;
+        var arrayData, region, client, documentClient, _i, arrayData_1, data, d, command, response, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, axios_1.default
-                        .get("https://content.guardianapis.com/search?page=1&q=".concat(name, "%20Party%20UK&api-key=5bce4960-e63d-435c-9a1c-5ba2b40a1be1&page-size=2&country=uk"))
+                        .get("https://content.guardianapis.com/search?page=1&q=".concat(name, "%20Party%20UK&api-key=5bce4960-e63d-435c-9a1c-5ba2b40a1be1&page-size=10&country=uk"))
                         .then(function (data) {
                         return data.data.response.results;
                     })];
                 case 1:
                     arrayData = _a.sent();
-                    console.log(arrayData);
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function allPartyNews() {
-    return __awaiter(this, void 0, void 0, function () {
-        var _i, partyNames_1, party, response, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _i = 0, partyNames_1 = partyNames;
-                    _a.label = 1;
-                case 1:
-                    if (!(_i < partyNames_1.length)) return [3 /*break*/, 6];
-                    party = partyNames_1[_i];
+                    region = "us-east-1";
+                    client = new client_dynamodb_1.DynamoDBClient({ region: region });
+                    documentClient = lib_dynamodb_1.DynamoDBDocumentClient.from(client);
+                    _i = 0, arrayData_1 = arrayData;
                     _a.label = 2;
                 case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, fetchNewsApi(party)];
-                case 3:
-                    response = _a.sent();
-                    console.log(response);
-                    return [3 /*break*/, 5];
-                case 4:
-                    err_1 = _a.sent();
-                    console.log("Error fetching news: " + err_1.message);
-                    return [3 /*break*/, 5];
-                case 5:
-                    _i++;
-                    return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
-            }
-        });
-    });
-}
-var region = "us-east-1";
-var client = new client_dynamodb_1.DynamoDBClient({ region: region });
-var documentClient = lib_dynamodb_1.DynamoDBDocumentClient.from(client);
-function putSentiment() {
-    return __awaiter(this, void 0, void 0, function () {
-        var params, command, response, err_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    params = {
-                        TableName: "sentiments",
+                    if (!(_i < arrayData_1.length)) return [3 /*break*/, 7];
+                    data = arrayData_1[_i];
+                    d = data.webPublicationDate;
+                    command = new lib_dynamodb_1.PutCommand({
+                        TableName: "sentiment_demo",
                         Item: {
-                            party_name: "Labour",
-                            time_stamp: 1234,
-                            impression: "Labour calls for ceasefire"
+                            "partyName": "Conservative",
+                            "time_stamp": (new Date(d).valueOf()),
+                            "text": data.webTitle
                         }
-                    };
-                    command = new lib_dynamodb_1.PutCommand(params);
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, documentClient.send(command)];
-                case 2:
-                    response = _a.sent();
-                    // Logging the response from DynamoDB
-                    console.log(response);
-                    return [3 /*break*/, 4];
+                    });
+                    _a.label = 3;
                 case 3:
-                    err_2 = _a.sent();
-                    console.log("Error putting the data: " + err_2.message);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    _a.trys.push([3, 5, , 6]);
+                    return [4 /*yield*/, documentClient.send(command)];
+                case 4:
+                    response = _a.sent();
+                    console.log(response);
+                    return [3 /*break*/, 6];
+                case 5:
+                    err_1 = _a.sent();
+                    console.error("ERROR uploading data Info: " + err_1.message);
+                    return [3 /*break*/, 6];
+                case 6:
+                    _i++;
+                    return [3 /*break*/, 2];
+                case 7: return [2 /*return*/];
             }
         });
     });
 }
+fetchNewsApi("Conservative");
+// async function partyNews(): Promise<void> {
+//     for (const party of partyNames) {
+//         try{
+//             let response = await fetchNewsApi(party);
+//             console.log(response);
+//         } catch(err: any){
+//             console.log("Error fetching news: " + err.message);
+//         }
+//     }    
+// }
 // Call the putSentiment function to execute the operation
 // putSentiment();
 // let d = '2016-01-01T00:00:00.000Z';
 // console.log(new Date(d).valueOf());
-findSentiment("Alright").then(function (data) {
-    //   console.log(data);
-});
+// findSentiment("Alright").then(data=> {
+//   console.log(data);
+// });
