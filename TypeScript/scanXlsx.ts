@@ -3,7 +3,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 // Read the Excel file
-const WorkBook: xlsx.WorkBook = xlsx.readFile('./DataFolder/general-elections-and-governments.xlsx');
+const WorkBook: xlsx.WorkBook = xlsx.readFile('./dataFolder/general-elections-and-governments.xlsx');
 
 // The third sheet contains the data we want ie the election results from 1918 t0 2019
 const sheetName: string =  WorkBook.SheetNames[3];
@@ -29,7 +29,7 @@ type DynamoDBData = {
 const allData: DynamoDBData[] = jsonData.map(row => ({
     partyName: row['__EMPTY_1'],
     year: parseInt(row['Election results by party: UK, GB, England, Scotland and Wales']),
-    totalVotes: parseInt(row['__EMPTY_3'] || '0', 10)
+    totalVotes: parseInt(row['__EMPTY_2'] || '0', 10)
 }));
 
 const region: string ="us-east-1";
@@ -38,24 +38,24 @@ const client = new DynamoDBClient({ region });
 const documentClient = DynamoDBDocumentClient.from(client);
 
 async function putData() : Promise<void> {
-    for (const data of allData) {
-        const command = new PutCommand({
-            TableName: "Election",
-            Item: {
-                "partyName": data.partyName,
-                "year": data.year,
-                "totalVotes": data.totalVotes
+    for (let i=1; i<=280; i++) {
+        if(allData[i].partyName === "PC/SNP"|| "CON" || "LAB" || "LD") {
+            const command = new PutCommand({
+                TableName: "Election",
+                Item: {
+                    "partyName": allData[i].partyName,
+                    "year": allData[i].year,
+                    "totalVotes": allData[i].totalVotes
+                }
+            });
+            try {
+                const response = await documentClient.send(command);
+                console.log(response);
+            } catch (err:any) {
+                console.error("ERROR uploading data Info: " + err.message);
             }
-        });
-
-        try {
-            const response = await documentClient.send(command);
-            console.log(response);
-        } catch (err:any) {
-            console.error("ERROR uploading data Info: " + err.message);
-        }
+        }       
     }
 }
 
 putData();
-// console.log(allData);
