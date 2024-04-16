@@ -12,13 +12,26 @@
   </head>
   <body>
     <header>
-      <h1>Race Of Commons</h1>
+      <h1 style="color: white">Race Of Commons</h1>
     </header>
 
     <div id="nav">
-      <button>Election history</button>
-      <button>Sentiment</button>
-      <button>Tweets</button>
+      <div style="display: flex; flex-direction: column">
+        <h2>Election history</h2>
+        <div  style="display: flex">
+          <button onclick="plotElectionData('CON')">CON</button>
+          <button onclick="plotElectionData('LAB')">LAB</button>
+          <button onclick="plotElectionData('SNP')">SNP</button>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <h2>Sentiment</h2>
+        <div style="display: flex">
+          <button onclick="plotSentiment('Conservative')">CON</button>
+          <button onclick="plotSentiment('Labour')">LAB</button>
+          <button onclick="plotSentiment('SNP')">SNP</button>
+        </div>
+      </div>
     </div>
 
     <div id="plot"></div>
@@ -26,30 +39,124 @@
     <script>
       //Open connection
       let connection = new WebSocket(
-        "wss://auhfg2511g.execute-api.us-east-1.amazonaws.com/production"
+        "wss://36121otpv1.execute-api.us-east-1.amazonaws.com/production/"
       );
+
+      let electionData;
+      let sentimentData;
 
       //Log connected response
       connection.onopen = function (event) {
         console.log("Connected: " + JSON.stringify(event));
-        sendMessage();
+        sendMessage("sendMessage");
+        sendMessage("getSentiment");
       };
 
       //Output messages from the server
       connection.onmessage = function (msg) {
-        const data = JSON.parse(msg.data);
-        console.log(data);
+        data = JSON.parse(msg.data);
+        if (data.hasOwnProperty("actual")) {
+          electionData = data;
+        } else {
+          sentimentData = data;
+        }
 
-        const trace = {
-          x: data.actual.times,
-          y: data.actual.value,
+        console.log(electionData);
+        console.log(sentimentData);
+
+        const trace1 = {
+          x: electionData.actual.CON.times,
+          y: electionData.actual.CON.value,
           type: "scatter",
+          mode: "lines",
+          name: "Conservative"
+        };
+
+        const trace2 = {
+          x: electionData.actual.LAB.times,
+          y: electionData.actual.LAB.value,
+          type: "scatter",
+          mode: "lines",
+          name: "Labour"
+        };
+
+        const trace3 = {
+          x: electionData.actual.SNP.times,
+          y: electionData.actual.SNP.value,
+          type: "scatter",
+          mode: "lines",
+          name: "SNP"
+        };
+
+        const graph = [trace1, trace2, trace3];
+
+        Plotly.newPlot("plot", graph);
+
+      };
+
+      function plotElectionData(name) {
+         const trace = {
+          x: electionData.actual[name].times,
+          y: electionData.actual[name].value,
+          type: "scatter",
+          mode: "lines",
+          name: name
         };
 
         const graph = [trace];
 
         Plotly.newPlot("plot", graph);
-      };
+      }
+
+      function plotSentiment(name) {
+        const partyName = name;
+        const pie = {
+          type: "pie",
+          values: [
+            sentimentData[partyName].pos,
+            sentimentData[partyName].neg,
+            sentimentData[partyName].neutral,
+          ],
+          labels: ["Positive", "Negative", "Neutral"],
+          automargin: true,
+          hole: 0.3,
+          text: partyName,
+          textposition: "inside",
+          textinfo: "label+percent",
+          textposition: "outside",
+        };
+
+        var layout = {
+          title: "Sentiment Analysis",
+          annotations: [
+            {
+              font: {
+                size: 20,
+              },
+              showarrow: false,
+              text: "",
+              x: 0.17,
+              y: 0.5,
+            },
+            {
+              font: {
+                size: 20,
+              },
+              showarrow: false,
+              text: partyName,
+              x: 0.82,
+              y: 0.5,
+            },
+          ],
+          height: 400,
+          width: 600,
+          showlegend: false,
+          grid: { rows: 1, columns: 2 },
+        };
+        const pieGraph = [pie];
+
+        Plotly.newPlot("plot", pieGraph, layout);
+      }
 
       //Log errors
       connection.onerror = function (error) {
@@ -57,18 +164,15 @@
       };
 
       //Send message to server
-      function sendMessage() {
+      function sendMessage(route) {
         //Create message to be sent to server
         let msgObject = {
-          action: "sendMessage", //Used for routing in API Gateway
+          action: route, //Used for routing in API Gateway
           data: "",
         };
         //Send message
-        connection.send(JSON.stringify(msgObject));
-        //Log result
-        console.log("Message sent: " + JSON.stringify(msgObject));
+        const response = connection.send(JSON.stringify(msgObject));
       }
-      
     </script>
   </body>
 </html>

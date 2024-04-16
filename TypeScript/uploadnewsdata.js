@@ -67,7 +67,7 @@ function fetchNewsApi(name) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, axios_1.default
-                        .get("https://content.guardianapis.com/search?page=1&q=".concat(name, "%20Party%20UK&api-key=5bce4960-e63d-435c-9a1c-5ba2b40a1be1&page-size=10&country=uk"))
+                        .get("https://content.guardianapis.com/search?page=1&q=".concat(name, "%20Party%20UK&api-key=5bce4960-e63d-435c-9a1c-5ba2b40a1be1&page-size=50&country=uk"))
                         .then(function (data) {
                         return data.data.response.results;
                     })];
@@ -83,11 +83,11 @@ function fetchNewsApi(name) {
                     data = arrayData_1[_i];
                     d = data.webPublicationDate;
                     command = new lib_dynamodb_1.PutCommand({
-                        TableName: "sentiment_demo",
+                        TableName: "sentiments",
                         Item: {
-                            "partyName": "Conservative",
+                            "party_name": "Labour",
                             "time_stamp": (new Date(d).valueOf()),
-                            "text": data.webTitle
+                            "impression": data.webTitle
                         }
                     });
                     _a.label = 3;
@@ -110,7 +110,7 @@ function fetchNewsApi(name) {
         });
     });
 }
-fetchNewsApi("Conservative");
+fetchNewsApi("SNP");
 // async function partyNews(): Promise<void> {
 //     for (const party of partyNames) {
 //         try{

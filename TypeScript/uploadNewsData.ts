@@ -26,7 +26,7 @@ const partyNames: string[] = ["Labour","Conservative","SNP"];
 async function fetchNewsApi(name: string): Promise<any> {
     let arrayData = await axios
         .get(
-            `https://content.guardianapis.com/search?page=1&q=${name}%20Party%20UK&api-key=5bce4960-e63d-435c-9a1c-5ba2b40a1be1&page-size=10&country=uk`
+            `https://content.guardianapis.com/search?page=1&q=${name}%20Party%20UK&api-key=5bce4960-e63d-435c-9a1c-5ba2b40a1be1&page-size=50&country=uk`
         )
         .then((data) => {
             return data.data.response.results;
@@ -44,11 +44,11 @@ async function fetchNewsApi(name: string): Promise<any> {
            let d =  data.webPublicationDate;
 
            const command = new PutCommand({
-               TableName: "sentiment_demo",
+               TableName: "sentiments",
                Item: {
-                   "partyName": "Conservative",
+                   "party_name": "Labour",
                    "time_stamp": (new Date(d).valueOf()),
-                   "text": data.webTitle
+                   "impression": data.webTitle
                }
            });
    
@@ -61,7 +61,7 @@ async function fetchNewsApi(name: string): Promise<any> {
        }
    }
 
-   fetchNewsApi("Conservative");
+   fetchNewsApi("SNP");
 
 
 
