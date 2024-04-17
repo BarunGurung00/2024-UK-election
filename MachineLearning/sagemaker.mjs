@@ -9,11 +9,6 @@ const region = "us-east-1";
 //Create SageMakerRuntimeClient
 const client = new SageMakerRuntimeClient({ region });
 
-/* Data we are going to send to endpoint
-    REPLACE WITH YOUR OWN DATA!
-    Should be last 100 points in your time series (depending on your choice of hyperparameters).
-    Make sure that start is correct.
-*/
 const endpointData = {
   instances: [
     {
@@ -76,7 +71,7 @@ async function invokeEndpoint() {
 
   //Must install @types/node for this to work
   let predictions = JSON.parse(Buffer.from(response.Body).toString("utf8"));
-  // console.log(predictions.predictions[0].quantiles);
+
   console.log(predictions.predictions[0].mean);
 }
 
