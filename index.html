@@ -4,11 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ElectionData</title>
-    <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="stylesheet" href="./assets/style.cs" />
     <script
       src="https://cdn.plot.ly/plotly-2.30.0.min.js"
       charset="utf-8"
     ></script>
+    <style>
+      * {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    background-image: url(https://cst3130-00831005.s3.amazonaws.com/assets/pic3.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    height: 90px;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 25px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#nav {
+    width: 50%;
+    height: 60px;
+    display: flex;
+    margin: 0 auto;
+    justify-content:center;
+    gap: 20px
+}
+
+button{
+    width: 35px;
+    height: 20px;
+    margin-left: 5px;
+}
+
+#plot{
+    width: 90%;
+    height: 450px;
+    margin: 0 auto;
+}
+    </style>
   </head>
   <body>
     <header>
@@ -18,7 +67,7 @@
     <div id="nav">
       <div style="display: flex; flex-direction: column">
         <h2>Election history</h2>
-        <div  style="display: flex">
+        <div style="display: flex">
           <button onclick="plotElectionData('CON')">CON</button>
           <button onclick="plotElectionData('LAB')">LAB</button>
           <button onclick="plotElectionData('SNP')">SNP</button>
@@ -61,15 +110,12 @@
           sentimentData = data;
         }
 
-        console.log(electionData);
-        console.log(sentimentData);
-
         const trace1 = {
           x: electionData.actual.CON.times,
           y: electionData.actual.CON.value,
           type: "scatter",
           mode: "lines",
-          name: "Conservative"
+          name: "Conservative",
         };
 
         const trace2 = {
@@ -77,7 +123,7 @@
           y: electionData.actual.LAB.value,
           type: "scatter",
           mode: "lines",
-          name: "Labour"
+          name: "Labour",
         };
 
         const trace3 = {
@@ -85,27 +131,39 @@
           y: electionData.actual.SNP.value,
           type: "scatter",
           mode: "lines",
-          name: "SNP"
+          name: "SNP",
+        };
+
+        let layout = {
+          title: "Election Data from 1918-2019",
+          uirevision: "true",
+          xaxis: { autorange: true },
+          yaxis: { autorange: true },
         };
 
         const graph = [trace1, trace2, trace3];
 
-        Plotly.newPlot("plot", graph);
-
+        Plotly.newPlot("plot", graph, layout);
       };
 
       function plotElectionData(name) {
-         const trace = {
+        const trace = {
           x: electionData.actual[name].times,
           y: electionData.actual[name].value,
           type: "scatter",
           mode: "lines",
-          name: name
+          name: name,
         };
 
+        let layout = {
+          title: name,
+          uirevision: "true",
+          xaxis: { autorange: true },
+          yaxis: { autorange: true },
+        };
         const graph = [trace];
 
-        Plotly.newPlot("plot", graph);
+        Plotly.newPlot("plot", graph, layout);
       }
 
       function plotSentiment(name) {
@@ -120,42 +178,17 @@
           labels: ["Positive", "Negative", "Neutral"],
           automargin: true,
           hole: 0.3,
+          title: partyName,
           text: partyName,
           textposition: "inside",
           textinfo: "label+percent",
           textposition: "outside",
         };
 
-        var layout = {
-          title: "Sentiment Analysis",
-          annotations: [
-            {
-              font: {
-                size: 20,
-              },
-              showarrow: false,
-              text: "",
-              x: 0.17,
-              y: 0.5,
-            },
-            {
-              font: {
-                size: 20,
-              },
-              showarrow: false,
-              text: partyName,
-              x: 0.82,
-              y: 0.5,
-            },
-          ],
-          height: 400,
-          width: 600,
-          showlegend: false,
-          grid: { rows: 1, columns: 2 },
-        };
+       
         const pieGraph = [pie];
 
-        Plotly.newPlot("plot", pieGraph, layout);
+        Plotly.newPlot("plot", pieGraph);
       }
 
       //Log errors
