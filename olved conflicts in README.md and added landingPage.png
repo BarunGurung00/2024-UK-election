@@ -1,0 +1,116 @@
+[33mcommit a6444f8a4d21a8b699716880254babb347981d8e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Merge: c912bbc 95d691f
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Thu Apr 18 22:41:33 2024 +0100
+
+    Resolved conflicts in README.md and added landingPage.png
+
+[33mcommit c912bbc479e60b20418975331b98ba23f52992b3[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Thu Apr 18 22:32:25 2024 +0100
+
+    update readme
+
+[33mcommit 95d691ffdb87e5f1c87f7223ff7f5b24bd745c24[m
+Author: Barun Gurung <119054109+BarunGurung00@users.noreply.github.com>
+Date:   Thu Apr 18 22:31:01 2024 +0100
+
+    Update README.md
+
+[33mcommit 515ad3eacdf57fcf6959dcde1c2609e25d98eb11[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Thu Apr 18 22:18:55 2024 +0100
+
+    Details of the project
+
+[33mcommit e4271a2ff2ce9f8b676ac183e17601d71c504c65[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Wed Apr 17 14:00:17 2024 +0100
+
+    production ready
+
+[33mcommit 4f4d95b1eafc356224e337f987d43526e63915cf[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Wed Apr 17 13:43:39 2024 +0100
+
+    final page
+
+[33mcommit f4e07aa7641fe4c3676b7fe65315e85b9847ce86[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Wed Apr 17 01:31:14 2024 +0100
+
+    hosted the assets in the cloud(S3)
+
+[33mcommit a5d1696f6829c5cbfeedfdc520e51811d8ce4e0f[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Tue Apr 16 17:06:17 2024 +0100
+
+    new api gateway for sentiments
+
+[33mcommit 548dcadaae939843996f191f5fd62597cfdea7ab[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Fri Apr 12 15:34:51 2024 +0100
+
+    graph update
+
+[33mcommit 59ee91f2970195d7d1ea9aa52ddb4f363f42bad7[m
+Merge: 76833e2 535ac25
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Mon Apr 8 19:27:49 2024 +0100
+
+    Merge branch 'main' of https://github.com/BarunGurung00/2024-UK-election
+
+[33mcommit 76833e28691b6acdd5914f6028e8b7d40d8bcd92[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Mon Apr 8 19:27:01 2024 +0100
+
+    wrote script that invokes the AI model from AWS
+
+[33mcommit 535ac25fd9074591dad03fd0035125e0af4ea3d4[m
+Author: Barun Gurung <119054109+BarunGurung00@users.noreply.github.com>
+Date:   Fri Apr 5 00:00:14 2024 +0100
+
+    Update README.md
+
+[33mcommit bf0d41e4e569200c8106f22e0f0632bb2e558d1e[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Tue Apr 2 20:36:56 2024 +0100
+
+    Fetching news data and uploading to dynamoDB with analyzer being invoked
+
+[33mcommit 19a357efa41b187c3ec51c7c6f3552804efc6a20[m
+Merge: eb164d2 3ba64be
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Tue Apr 2 00:17:05 2024 +0100
+
+    Merge branch 'main' of https://github.com/BarunGurung00/2024-UK-election
+
+[33mcommit eb164d2fa157ffa8c5aa16d7274008aacdd512d2[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Tue Apr 2 00:14:04 2024 +0100
+
+    added image
+
+[33mcommit 3ba64bebf90f29ed46ed85253562a378cf61a7ed[m
+Author: Barun Gurung <119054109+BarunGurung00@users.noreply.github.com>
+Date:   Mon Apr 1 12:20:11 2024 +0100
+
+    Update README.md
+
+[33mcommit 214284061db622557d4ddd89cda6ccd6711b5463[m
+Author: Barun Gurung <119054109+BarunGurung00@users.noreply.github.com>
+Date:   Mon Apr 1 12:19:23 2024 +0100
+
+    Create README.md
+
+[33mcommit a00ca20e3a4acbbdea10c63de87cbd04937dc701[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Mon Apr 1 11:45:50 2024 +0100
+
+    addig script that retrieves data from worksheet and uploads to dynamodb table
+
+[33mcommit 254fe89e2128c0d0a556a3a80f998d8c2ff64960[m
+Author: Barun <bg440@live.mdx.ac.uk>
+Date:   Mon Apr 1 11:26:37 2024 +0100
+
+    first commit
