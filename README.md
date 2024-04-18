@@ -1,10 +1,9 @@
 # UK Election Prediction
 
 General Election history visualization tool, which is a single page web application hosted entirely on cloud.
-
 Built using Amazon Web Services such as SageMaker, Lambda, DynamoDB in addition to TypeScript & plotly.js
 
-Hosted on AWS S3 bucket and is available: https://cst3130-00831005.s3.amazonaws.com/main.html
+### Hosted on AWS S3 bucket and is available: https://cst3130-00831005.s3.amazonaws.com/main.html
 
 ## Project front-end screen shots
 
